@@ -12,21 +12,21 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Calendar-->
+        <!--Overview-->
         <scene sceneID="uSF-LM-fNa">
             <objects>
-                <viewController id="dTR-Hk-2NK" sceneMemberID="viewController">
+                <viewController id="dTR-Hk-2NK" customClass="MainPageViewController" customModule="MyCalendar" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bGX-oI-aSw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="F6g-AR-4N9"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Calendar" selectedImage="calendar" id="r7M-Py-DVr"/>
+                    <tabBarItem key="tabBarItem" title="Overview" selectedImage="histogram-icon" id="r7M-Py-DVr"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YJz-99-U5w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2330" y="133"/>
+            <point key="canvasLocation" x="25" y="1063"/>
         </scene>
         <!--Ib Calendar Data Source-->
         <scene sceneID="tne-QT-ifu">
@@ -37,7 +37,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JAr-Zk-BPU" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
-                                <rect key="frame" x="0.0" y="231" width="375" height="287.5"/>
+                                <rect key="frame" x="0.0" y="231" width="375" height="336.5"/>
                                 <color key="backgroundColor" red="0.69411764705882351" green="0.92549019607843142" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Rjp-y4-kN2">
                                     <size key="itemSize" width="98" height="90"/>
@@ -220,7 +220,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4HE-n9-b9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1442" y="-632"/>
+            <point key="canvasLocation" x="25" y="-699"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="D1l-cB-pea">
@@ -236,7 +236,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CfP-5q-DVE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1442" y="-1386"/>
+            <point key="canvasLocation" x="25" y="-1391"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="KKI-hZ-cFB">
@@ -249,14 +249,13 @@
                     </tabBar>
                     <connections>
                         <segue destination="dTR-Hk-2NK" kind="relationship" relationship="viewControllers" id="iup-5j-Fvm"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pbP-HG-FUG"/>
                         <segue destination="1RV-Xp-rGj" kind="relationship" relationship="viewControllers" id="dzQ-kr-D3H"/>
                         <segue destination="HRr-6x-4fi" kind="relationship" relationship="viewControllers" id="mb1-Q9-DlG"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lHL-B6-2dA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3055" y="-699"/>
+            <point key="canvasLocation" x="-1682" y="911"/>
         </scene>
         <!--Add Due View Controller-->
         <scene sceneID="wmR-km-5QI">
@@ -400,7 +399,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9gy-25-SQf" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="b7L-eV-tt3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="824.79999999999995" y="-533.88305847076469"/>
+            <point key="canvasLocation" x="1097" y="-539"/>
         </scene>
         <!--Date Detail View Controller-->
         <scene sceneID="BZE-qO-8tY">
@@ -588,11 +587,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4D-N0-MEG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Igk-sx-6KH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="832.79999999999995" y="136.28185907046478"/>
+            <point key="canvasLocation" x="1098" y="133"/>
         </scene>
     </scenes>
     <resources>
         <image name="calendar" width="40" height="40"/>
+        <image name="histogram-icon" width="40" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="CeS-6A-Ja6"/>
