@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Calendar-->
+        <scene sceneID="uSF-LM-fNa">
+            <objects>
+                <viewController id="dTR-Hk-2NK" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bGX-oI-aSw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="F6g-AR-4N9"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Calendar" selectedImage="calendar" id="r7M-Py-DVr"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YJz-99-U5w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2330" y="133"/>
+        </scene>
         <!--Ib Calendar Data Source-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -21,7 +37,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JAr-Zk-BPU" customClass="JTAppleCalendarView" customModule="JTAppleCalendar">
-                                <rect key="frame" x="0.0" y="231" width="375" height="336.5"/>
+                                <rect key="frame" x="0.0" y="231" width="375" height="287.5"/>
                                 <color key="backgroundColor" red="0.69411764705882351" green="0.92549019607843142" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Rjp-y4-kN2">
                                     <size key="itemSize" width="98" height="90"/>
@@ -38,7 +54,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIb-Tk-VbL">
-                                                    <rect key="frame" x="79" y="11" width="8" height="8"/>
+                                                    <rect key="frame" x="87" y="3" width="8" height="8"/>
                                                     <color key="backgroundColor" red="1" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="8" id="gTo-Ir-jAO"/>
@@ -177,6 +193,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Calendar" selectedImage="calendar" id="6iY-5n-ifD"/>
                     <connections>
                         <outlet property="calendarView" destination="JAr-Zk-BPU" id="Llq-zv-0Li"/>
                         <outlet property="monthTitle" destination="UKq-fe-pwe" id="Iny-Ie-ejH"/>
@@ -187,7 +204,59 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>
+            <point key="canvasLocation" x="26" y="133"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="cds-hD-7cU">
+            <objects>
+                <viewController id="HRr-6x-4fi" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8lT-Np-ve7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="ZWU-Lc-Zbu"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="ype-a5-kxf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4HE-n9-b9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1442" y="-632"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="D1l-cB-pea">
+            <objects>
+                <viewController id="1RV-Xp-rGj" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="h4l-VP-pRt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="LjL-gP-d01"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="0nL-iA-zNS"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CfP-5q-DVE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1442" y="-1386"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="KKI-hZ-cFB">
+            <objects>
+                <tabBarController id="v3u-0p-DaN" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Dk4-56-an1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="dTR-Hk-2NK" kind="relationship" relationship="viewControllers" id="iup-5j-Fvm"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="pbP-HG-FUG"/>
+                        <segue destination="1RV-Xp-rGj" kind="relationship" relationship="viewControllers" id="dzQ-kr-D3H"/>
+                        <segue destination="HRr-6x-4fi" kind="relationship" relationship="viewControllers" id="mb1-Q9-DlG"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lHL-B6-2dA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3055" y="-699"/>
         </scene>
         <!--Add Due View Controller-->
         <scene sceneID="wmR-km-5QI">
@@ -522,6 +591,9 @@
             <point key="canvasLocation" x="832.79999999999995" y="136.28185907046478"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="calendar" width="40" height="40"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="CeS-6A-Ja6"/>
     </inferredMetricsTieBreakers>

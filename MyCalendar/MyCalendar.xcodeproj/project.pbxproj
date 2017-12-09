@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07411BADA0193C72BD990360 /* Pods_MyCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F74E72274F946B684157201 /* Pods_MyCalendar.framework */; };
+		5A0083CA1FDBA5EF009F85CE /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0083C91FDBA5EF009F85CE /* MainPageViewController.swift */; };
 		EC66F1AB1FCD5564005B8270 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC66F1AA1FCD5564005B8270 /* AppDelegate.swift */; };
 		EC66F1AD1FCD5564005B8270 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC66F1AC1FCD5564005B8270 /* ViewController.swift */; };
 		EC66F1B01FCD5564005B8270 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC66F1AE1FCD5564005B8270 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		4B652824C7A5BE8E174B74BF /* Pods-MyCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyCalendar/Pods-MyCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		4F74E72274F946B684157201 /* Pods_MyCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A0083C91FDBA5EF009F85CE /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		72D8EC8F6035F4AD7B38838B /* Pods-MyCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCalendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyCalendar/Pods-MyCalendar.debug.xcconfig"; sourceTree = "<group>"; };
 		EC66F1A71FCD5564005B8270 /* MyCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC66F1AA1FCD5564005B8270 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				ECEB12511FCD56FE004DF2EF /* CollectionViewCell.swift */,
 				ECF60C761FCF995C006DD4C6 /* DateDetailViewController.swift */,
 				ECF60C781FCFBE76006DD4C6 /* AddDueViewController.swift */,
+				5A0083C91FDBA5EF009F85CE /* MainPageViewController.swift */,
 			);
 			path = MyCalendar;
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				ECF60C771FCF995C006DD4C6 /* DateDetailViewController.swift in Sources */,
 				EC66F1AB1FCD5564005B8270 /* AppDelegate.swift in Sources */,
 				ECF60C791FCFBE76006DD4C6 /* AddDueViewController.swift in Sources */,
+				5A0083CA1FDBA5EF009F85CE /* MainPageViewController.swift in Sources */,
 				ECEB12521FCD56FE004DF2EF /* CollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
