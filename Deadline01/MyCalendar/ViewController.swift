@@ -14,6 +14,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var yearTitle: UILabel!
     @IBOutlet weak var monthTitle: UILabel!
     
+    @IBOutlet weak var popoverView: UIView!
+    @IBOutlet weak var dimmerView: UIView!
+    
     public var eventList: Array<Due> = []
     public var dueDates: Array<String> = []
     
@@ -42,6 +45,9 @@ class ViewController: UIViewController {
 
         // Fetch Events
         fetchEvents()
+        // Setup layouts
+        popoverView.isHidden = true
+        dimmerView.isHidden = true
         
         // build other views
         dateDetailBuilder()
@@ -59,6 +65,8 @@ class ViewController: UIViewController {
     }
     
     private func fetchEvents() {
+        // show fetch events from iCloud or from the local storage
+        
         let eventTemp: Due = Due.init(subject: "INFO", color: UIColor.yellow, content: "Final Project", deadline: "2017 11 30", emergence: 1)
         
         eventList.append(eventTemp)
@@ -71,11 +79,46 @@ class ViewController: UIViewController {
             let detailView = segue.destination as! DateDetailViewController
             detailView.detail = dateCell.dueEvent
             detailView.formattedDate = dateCell.date
+            detailView.lastView = "mainCalendar"
         } else if segue.identifier == "add" || segue.identifier == "toAddDue" {
         }
     }
     
     @IBAction func unwindToViewController(unwindSegue: UIStoryboardSegue) {
+    }
+    
+    @IBAction func displayPressed(_ sender: UIButton) {
+        popoverView.isHidden = false
+        dimmerView.isHidden = false
+        
+        // hide this view even not sync!
+        
+    }
+    
+    @IBAction func setted(_ sender: UIButton) {
+        var errMessage = ""
+        
+        //        if newSource != nil && newSource != "" {
+        //            let range = newSource!.startIndex..<newSource!.endIndex
+        //            let correctRange = newSource!.range(of: "^(http)s?(:\\/\\/).*$", options: .regularExpression)
+        //            if correctRange == range {
+        //                source = newSource!
+        //                fetchData()
+        //            } else {
+        //                errMessage = "Invalid URL"
+        //            }
+        //        } else {
+        //            errMessage = "Please enter an URL"
+        //        }
+        if errMessage != "" {
+            let alertController = UIAlertController(title: "ERROR", message: errMessage, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true)
+        }
+        
+        popoverView.isHidden = true
+        dimmerView.isHidden = true
     }
     
     private func dateDetailBuilder() {
