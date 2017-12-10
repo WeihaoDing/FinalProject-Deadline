@@ -10,24 +10,38 @@ import UIKit
 
 class AddDueViewController: UIViewController, UIPopoverPresentationControllerDelegate{
 
+    @IBAction func dateChanged(_ sender: UIDatePicker) {
+        selectedDate = sender.date
+        dateButton.setTitle(dateFormatter.string(from: sender.date), for: .normal)
+        
+    }
+    @IBOutlet weak var colorButton: UIButton!
+    @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var subText: UITextField!
     @IBOutlet weak var conText: UITextField!
-
+    
+    @IBOutlet weak var colorPickerStack: UIStackView!
     @IBOutlet weak var dateButton: UIButton!
     
-    var selectedDate : Date?
-    
+    var selectedDate = Date()
+    let dateFormatter = DateFormatter()
     @IBAction func dateButtonClicked(_ sender: UIButton) {
-        
+        datePicker.isHidden = !datePicker.isHidden
+    }
+    
+    @IBAction func colorPicked(_ sender: UIButton) {
+        colorPickerStack.isHidden = true
+        colorButton.setBackgroundImage(sender.backgroundImage(for: .normal), for: .normal)
+    }
+    @IBAction func colorButtonClicked(_ sender: UIButton) {
+        colorPickerStack.isHidden = !colorPickerStack.isHidden
     }
     
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
     
-    @objc func dateChanged(_ datePicker: UIDatePicker) {
-        print("DATE :: \(datePicker.date)")
-    }
+    
     /*
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "en_US_POSIX") // edited
@@ -55,17 +69,21 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDatePicker" {
-            let popoverViewController = segue.destination as! DatePickerViewController
+        if segue.identifier == "showColorPicker" {
+            let popoverViewController = segue.destination
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
             popoverViewController.popoverPresentationController!.delegate = self as UIPopoverPresentationControllerDelegate
-            selectedDate = popoverViewController.date
-            dateButton.setTitle(selectedDate?.description, for: .normal)
-            
+
+
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.setLocalizedDateFormatFromTemplate("EE MMM d hh mm")
+        dateButton.setTitle(dateFormatter.string(from: selectedDate), for: .normal)
+        colorPickerStack.isHidden = true
+        datePicker.isHidden = true
         
 
        
