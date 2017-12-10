@@ -5,3 +5,4 @@ target 'MyCalendar' do
 use_frameworks!
 pod 'JTAppleCalendar', '~> 7.0'
 end
+
