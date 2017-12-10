@@ -8,15 +8,27 @@
 
 import UIKit
 
-class AddDueViewController: UIViewController {
+class AddDueViewController: UIViewController, UIPopoverPresentationControllerDelegate{
 
     @IBOutlet weak var subText: UITextField!
     @IBOutlet weak var conText: UITextField!
-    @IBOutlet weak var datepicker: UIDatePicker!
- 
+
+    @IBOutlet weak var dateButton: UIButton!
+    
     var selectedDate : Date?
     
-     /*
+    @IBAction func dateButtonClicked(_ sender: UIButton) {
+        
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    
+    @objc func dateChanged(_ datePicker: UIDatePicker) {
+        print("DATE :: \(datePicker.date)")
+    }
+    /*
     let dateFormatter = DateFormatter()
     dateFormatter.locale = Locale(identifier: "en_US_POSIX") // edited
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
@@ -41,16 +53,27 @@ class AddDueViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDatePicker" {
+            let popoverViewController = segue.destination as! DatePickerViewController
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+            popoverViewController.popoverPresentationController!.delegate = self as UIPopoverPresentationControllerDelegate
+            selectedDate = popoverViewController.date
+            dateButton.setTitle(selectedDate?.description, for: .normal)
+            
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.datepicker.addTarget(self, action: #selector(self.storeSelectedRow), for: UIControlEvents.valueChanged)
+
        
         // Do any additional setup after loading the view.
     }
     
     @objc func storeSelectedRow(){
-        self.selectedDate = self.datepicker.date
+
     }
 
     override func didReceiveMemoryWarning() {
