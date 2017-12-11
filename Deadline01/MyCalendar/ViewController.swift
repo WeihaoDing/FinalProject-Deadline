@@ -20,11 +20,12 @@ class ViewController: UIViewController {
     
     public var eventList: Array<Due> = []
     public var dueDates: Array<String> = []
-
+    
     // DATABASE SHOULD BE PRIVATE
     let database = CKContainer.default().publicCloudDatabase
     var eventsFromCloud: Array<CKRecord> = []
     
+    private var multipleDueView: MultipleDueViewController!
     private var dateDetailView: DateDetailViewController!
     private var addDueView: AddDueViewController!
     private var todaySelected: Bool = true
@@ -52,6 +53,7 @@ class ViewController: UIViewController {
         popoverView.isHidden = true
         dimmerView.isHidden = true
         // build other views
+        multipleDueBuilder()
         dateDetailBuilder()
         addDueBuilder()
     }
@@ -59,13 +61,15 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         calendarView.reloadData()
+        let listView = self.tabBarController?.viewControllers?[1] as! ListViewController
+        listView.eventList = self.eventList
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     private func setUpCalendar() {
         calendarView.minimumLineSpacing = 3
         calendarView.minimumInteritemSpacing = 0
@@ -75,10 +79,17 @@ class ViewController: UIViewController {
         if segue.identifier == "toDateDetail" {
             let dateCell = sender as! CollectionViewCell
             let detailView = segue.destination as! DateDetailViewController
-            detailView.detail = dateCell.dueEvent
+            detailView.detail = dateCell.dueEvent[0]
             detailView.formattedDate = dateCell.date
             detailView.lastView = "mainCalendar"
         } else if segue.identifier == "add" || segue.identifier == "toAddDue" {
+            let addDueView = segue.destination as! AddDueViewController
+            addDueView.eventList = self.eventList
+        } else if segue.identifier == "toMultipleDue" {
+            let dateCell = sender as! CollectionViewCell
+            let multipleDueView = segue.destination as! MultipleDueViewController
+            multipleDueView.eventList = dateCell.dueEvent
+            multipleDueView.formattedDate = dateCell.date
         }
     }
     
@@ -117,6 +128,12 @@ class ViewController: UIViewController {
         
         popoverView.isHidden = true
         dimmerView.isHidden = true
+    }
+    
+    private func multipleDueBuilder() {
+        if multipleDueView == nil {
+            multipleDueView = storyboard?.instantiateViewController(withIdentifier: "multipleDueViewController") as! MultipleDueViewController
+        }
     }
     
     private func dateDetailBuilder() {
@@ -327,16 +344,33 @@ extension ViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDele
             dateCell.dateLabel.textColor = UIColor.white
         }
         // set event indicator and events corresponding to a date
+        
         dateFormatter.dateFormat = "yyyy MM dd"
         let cellStateDate = dateFormatter.string(from: cellState.date)
-        if let index = dueDates.index(of: cellStateDate) {
+        var onedayEvent: Array<Int> = []
+        if dueDates.count >= 1 {
+            for i in 0...dueDates.count - 1 {
+                if dueDates[i].hasPrefix(cellStateDate) {
+                    onedayEvent.append(i)
+                    dateCell.dueEvent.append(eventList[i])
+                }
+            }
+        }
+        var segueTemp: UIStoryboardSegue!
+        if !onedayEvent.isEmpty {
             dateCell.eventIndicator.isHidden = false
-            dateCell.eventIndicator.backgroundColor = eventList[index].color
-            dateCell.dueEvent = eventList[index]
+            if onedayEvent.count > 1 {
+                dateCell.eventIndicator.backgroundColor = UIColor(red:0.64, green:0.00, blue:1.00, alpha:1.0)
+                segueTemp = UIStoryboardSegue.init(identifier: "toMultipleDue", source: self, destination: multipleDueView)
+            } else {
+                dateCell.eventIndicator.backgroundColor = eventList[onedayEvent[0]].color
+                segueTemp = UIStoryboardSegue.init(identifier: "toDateDetail", source: self, destination: dateDetailView)
+            }
         } else {
             dateCell.eventIndicator.isHidden = true
+            segueTemp = UIStoryboardSegue.init(identifier: "toAddDue", source: self, destination: addDueView)
         }
-        
+        dateCell.segueTo = segueTemp
         return dateCell
     }
     
@@ -345,7 +379,7 @@ extension ViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDele
         if !checkDate(cellState, Date()) {   // if it's not today, change the background color
             selectedCell.backgroundColor = UIColor(red:0.23, green:0.84, blue:0.78, alpha:1.0)
         }
-        setSegue(selectedCell)
+        performSegue(withIdentifier: selectedCell.segueTo.identifier!, sender: selectedCell)
     }
     
     func calendar(_ calendar: JTAppleCalendarView, didDeselectDate date: Date, cell: JTAppleCell?, cellState: CellState) {
@@ -370,19 +404,5 @@ extension ViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDele
         return checkDate == cellStateDate ? true : false
     }
     
-    // set segue:
-    //      the date has due ---> toDateDetail
-    //      the date has no due ---> toAddDue
-    private func setSegue(_ selectedCell: CollectionViewCell) {
-        if selectedCell.dueEvent.subject != "" {
-            let segueTemp = UIStoryboardSegue.init(identifier: "toDateDetail", source: self, destination: dateDetailView)
-            selectedCell.segueTo = segueTemp
-            performSegue(withIdentifier: "toDateDetail", sender: selectedCell)
-        } else {
-            let segueTemp = UIStoryboardSegue.init(identifier: "toAddDue", source: self, destination: addDueView)
-            selectedCell.segueTo = segueTemp
-            performSegue(withIdentifier: "toAddDue", sender: selectedCell)
-        }
-    }
-    
 }
+

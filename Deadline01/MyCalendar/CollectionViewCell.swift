@@ -13,7 +13,7 @@ class CollectionViewCell: JTAppleCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var eventIndicator: UIView!
     
-    public var dueEvent: Due = Due()
+    public var dueEvent: Array<Due> = []
     public var segueTo: UIStoryboardSegue!
     public var date: String = ""
     

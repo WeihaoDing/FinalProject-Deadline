@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07411BADA0193C72BD990360 /* Pods_MyCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F74E72274F946B684157201 /* Pods_MyCalendar.framework */; };
+		5A5118501FDE8FB0008AFA0E /* MultipleDueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A51184F1FDE8FB0008AFA0E /* MultipleDueViewController.swift */; };
 		EC536F601FD7835B006A5902 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC536F5F1FD7835B006A5902 /* ListViewController.swift */; };
 		EC536F621FD78369006A5902 /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC536F611FD78369006A5902 /* StatsViewController.swift */; };
 		EC5DBCA81FDA2ECF00A70538 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5DBCA71FDA2ECF00A70538 /* ListTableViewCell.swift */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		4B652824C7A5BE8E174B74BF /* Pods-MyCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyCalendar/Pods-MyCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		4F74E72274F946B684157201 /* Pods_MyCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A51184F1FDE8FB0008AFA0E /* MultipleDueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MultipleDueViewController.swift; path = "../../Deadline01 copy/MyCalendar/MultipleDueViewController.swift"; sourceTree = "<group>"; };
 		72D8EC8F6035F4AD7B38838B /* Pods-MyCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyCalendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyCalendar/Pods-MyCalendar.debug.xcconfig"; sourceTree = "<group>"; };
 		EC536F5F1FD7835B006A5902 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		EC536F611FD78369006A5902 /* StatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				EC536F5F1FD7835B006A5902 /* ListViewController.swift */,
 				EC536F611FD78369006A5902 /* StatsViewController.swift */,
 				EC5DBCA71FDA2ECF00A70538 /* ListTableViewCell.swift */,
+				5A51184F1FDE8FB0008AFA0E /* MultipleDueViewController.swift */,
 			);
 			path = MyCalendar;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 			files = (
 				EC66F1AD1FCD5564005B8270 /* ViewController.swift in Sources */,
 				EC5DBCA81FDA2ECF00A70538 /* ListTableViewCell.swift in Sources */,
+				5A5118501FDE8FB0008AFA0E /* MultipleDueViewController.swift in Sources */,
 				ECF60C771FCF995C006DD4C6 /* DateDetailViewController.swift in Sources */,
 				EC536F601FD7835B006A5902 /* ListViewController.swift in Sources */,
 				EC66F1AB1FCD5564005B8270 /* AppDelegate.swift in Sources */,

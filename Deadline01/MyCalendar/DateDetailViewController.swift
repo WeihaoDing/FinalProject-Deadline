@@ -17,20 +17,21 @@ class DateDetailViewController: UIViewController {
     @IBOutlet weak var deadlineTitle: UILabel!
     @IBOutlet weak var emergenceTitle: UILabel!
     
-
-    
-    // How to deal with multiple dues???
     public var detail: Due = Due.init()
     public var formattedDate: String = ""
     
     public var lastView: String = ""
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("DETAIL")
+        print(detail.toJSON()!)
+        print(formattedDate)
+        
         setUpLayout()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -41,6 +42,8 @@ class DateDetailViewController: UIViewController {
             self.performSegue(withIdentifier: "unwindToCalendar", sender: nil)
         } else if lastView == "listView" {
             self.performSegue(withIdentifier: "unwindToList", sender: nil)
+        } else {
+            self.performSegue(withIdentifier: "unwindToMultiple", sender: nil)
         }
     }
     
@@ -55,5 +58,5 @@ class DateDetailViewController: UIViewController {
         deadlineTitle.text = detail.deadline
         emergenceTitle.text = String.init(detail.emergence)
     }
-
+    
 }
