@@ -26,11 +26,16 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return eventList.count
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
             eventList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
@@ -100,11 +105,23 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             tableView.addSubview(refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(ListViewController.refreshData(sender:)), for: .valueChanged)
-        
+        tableView.reloadData()
         
     }
     
     
+    @IBAction func editButtonClicked(_ sender: UINavigationItem) {
+        if(self.tableView.isEditing == true)
+        {
+            self.tableView.isEditing = false
+            sender.title = "Edit"
+        }
+        else
+        {
+            self.tableView.isEditing = true
+            sender.title = "Done"
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         eventList.append(Due(subject: "1", color: .red, content: "1", deadline: "1", emergence: 1))

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="shI-NB-GDq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="shI-NB-GDq">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -179,7 +179,11 @@
                                 <color key="backgroundColor" red="0.90784019231796265" green="0.97647058823529409" blue="0.97710436582565308" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
                                     <navigationItem title="Title" id="V6l-lC-big">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="XQ8-7c-e4i"/>
+                                        <barButtonItem key="leftBarButtonItem" title="Edit" id="XQ8-7c-e4i">
+                                            <connections>
+                                                <action selector="editButtonClicked:" destination="Y2R-Qy-UbE" id="ynh-hq-1p8"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Settings" id="qrb-Ly-H1a">
                                             <connections>
                                                 <action selector="settingsPressed:" destination="Y2R-Qy-UbE" id="x5R-bh-DuY"/>
@@ -357,7 +361,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIb-Tk-VbL">
-                                                    <rect key="frame" x="79" y="11" width="8" height="8"/>
+                                                    <rect key="frame" x="87" y="3" width="8" height="8"/>
                                                     <color key="backgroundColor" red="1" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="8" id="gTo-Ir-jAO"/>
