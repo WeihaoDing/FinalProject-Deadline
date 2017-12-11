@@ -10,11 +10,6 @@ import UIKit
 
 class AddDueViewController: UIViewController, UIPopoverPresentationControllerDelegate{
 
-    @IBAction func dateChanged(_ sender: UIDatePicker) {
-        selectedDate = sender.date
-        dateButton.setTitle(dateFormatter.string(from: sender.date), for: .normal)
-        
-    }
     @IBOutlet weak var colorButton: UIButton!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var subText: UITextField!
@@ -25,18 +20,27 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
     
     var selectedDate = Date()
     let dateFormatter = DateFormatter()
+    
     @IBAction func dateButtonClicked(_ sender: UIButton) {
         datePicker.isHidden = !datePicker.isHidden
     }
     
-    @IBAction func colorPicked(_ sender: UIButton) {
-        colorPickerStack.isHidden = true
-        colorButton.setBackgroundImage(sender.backgroundImage(for: .normal), for: .normal)
+    @IBAction func dateChanged(_ sender: UIDatePicker) {
+        selectedDate = sender.date
+        dateButton.setTitle(dateFormatter.string(from: sender.date), for: .normal)
+        
     }
+    
     @IBAction func colorButtonClicked(_ sender: UIButton) {
         colorPickerStack.isHidden = !colorPickerStack.isHidden
     }
     
+    @IBAction func colorPicked(_ sender: UIButton) {
+        colorPickerStack.isHidden = true
+        
+        colorButton.backgroundColor = sender.backgroundColor
+    }
+
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
@@ -51,20 +55,20 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
     let dateString = dateFormatter.string(from:date)
     */
     @IBAction func addDue(_ sender: UIButton) {
-        let subData : String = subText.text!
-        let conData : String = conText.text!
-        
-        
-        let due = Due(subject: subData, color: UIColor.black, content: conData, deadline: (Date().description), emergence: 10)
-        
-        let alert = UIAlertController(title: "confirmation", message: "You have added a Due successfully!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
-            action in
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let nvc = storyBoard.instantiateViewController(withIdentifier: "mainCalendar")
-            self.present(nvc, animated: true, completion: nil)
-        }))
-        self.present(alert, animated: true, completion: nil)
+//        let subData : String = subText.text!
+//        let conData : String = conText.text!
+//
+//
+//        let due = Due(subject: subData, color: UIColor.black, content: conData, deadline: (Date().description), emergence: 10)
+//
+//        let alert = UIAlertController(title: "confirmation", message: "You have added a Due successfully!", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+//            action in
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//            let nvc = storyBoard.instantiateViewController(withIdentifier: "mainCalendar")
+//            self.present(nvc, animated: true, completion: nil)
+//        }))
+//        self.present(alert, animated: true, completion: nil)
     }
 
     
@@ -77,6 +81,7 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
 
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -98,16 +103,5 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
- 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

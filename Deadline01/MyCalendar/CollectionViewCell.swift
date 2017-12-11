@@ -51,4 +51,37 @@ public struct Due {
         self.deadline = deadline
         self.emergence = emergence
     }
+    
+    func toJSON() -> String? {
+        let tempColor = [self.color.components.red, self.color.components.green, self.color.components.blue]
+        let temp = ["subject": self.subject, "color": tempColor, "content": self.content, "deadline": self.deadline, "emergence": self.emergence] as [String : Any]
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: temp, options: .prettyPrinted)
+            return String(data: jsonData, encoding: String.Encoding.utf8)
+        } catch let error {
+            print("ERROR converting to json: \(error)")
+            return nil
+        }
+    }
 }
+
+public struct DueDecodable: Decodable {
+    let subject: String
+    let color: Array<CGFloat>
+    let content: String
+    // conversion between Date and String?
+    let deadline: String
+    // 1 (urgent) --- 10
+    let emergence: Int
+}
+
+extension UIColor {
+    var coreImageColor: CIColor {
+        return CIColor(color: self)
+    }
+    var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        let coreImageColor = self.coreImageColor
+        return (coreImageColor.red, coreImageColor.green, coreImageColor.blue, coreImageColor.alpha)
+    }
+}
+

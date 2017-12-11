@@ -9,7 +9,9 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
-
+    public var dueEvent: Due = Due()
+    public var date: String = ""
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: "cell")
     }
@@ -29,5 +31,6 @@ class ListTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-
+    
 }
+

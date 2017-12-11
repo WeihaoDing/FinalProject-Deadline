@@ -397,7 +397,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyCalendar/MyCalendar.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WN5C73M7AR;
+				DEVELOPMENT_TEAM = VUL5DTPJQE;
 				INFOPLIST_FILE = MyCalendar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -417,7 +417,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyCalendar/MyCalendar.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WN5C73M7AR;
+				DEVELOPMENT_TEAM = VUL5DTPJQE;
 				INFOPLIST_FILE = MyCalendar/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

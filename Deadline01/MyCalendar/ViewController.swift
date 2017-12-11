@@ -8,6 +8,7 @@
 
 import UIKit
 import JTAppleCalendar
+import CloudKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var calendarView: JTAppleCalendarView!
@@ -19,6 +20,10 @@ class ViewController: UIViewController {
     
     public var eventList: Array<Due> = []
     public var dueDates: Array<String> = []
+
+    // DATABASE SHOULD BE PRIVATE
+    let database = CKContainer.default().publicCloudDatabase
+    var eventsFromCloud: Array<CKRecord> = []
     
     private var dateDetailView: DateDetailViewController!
     private var addDueView: AddDueViewController!
@@ -28,7 +33,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // fetch data from iCloud or use local storage
+        fetchData()
         // SetUps
         setUpCalendar()
         // set up month & year
@@ -42,16 +48,17 @@ class ViewController: UIViewController {
         }
         // go to today
         calendarView.scrollToDate(Date(), animateScroll: false)
-
-        // Fetch Events
-        fetchEvents()
         // Setup layouts
         popoverView.isHidden = true
         dimmerView.isHidden = true
-        
         // build other views
         dateDetailBuilder()
         addDueBuilder()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        calendarView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,15 +69,6 @@ class ViewController: UIViewController {
     private func setUpCalendar() {
         calendarView.minimumLineSpacing = 3
         calendarView.minimumInteritemSpacing = 0
-    }
-    
-    private func fetchEvents() {
-        // show fetch events from iCloud or from the local storage
-        
-        let eventTemp: Due = Due.init(subject: "INFO", color: UIColor.yellow, content: "Final Project", deadline: "2017 11 30", emergence: 1)
-        
-        eventList.append(eventTemp)
-        dueDates.append(eventTemp.deadline)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -133,11 +131,159 @@ class ViewController: UIViewController {
         }
     }
     
+    /* Fetches data from the iCloud.
+     --> If succeeds, uses the cloud data writes the cloud data to a local file (creates one if no local file exists).
+     --> If fails, checks if a local file exists. If the local exists, uses the local file. If not, creates an empty local file. */
+    @objc func fetchData() {
+        let query = CKQuery(recordType: "Due", predicate: NSPredicate(value: true))
+        query.sortDescriptors = [NSSortDescriptor(key: "deadline", ascending: true)]
+        
+        database.perform(query, inZoneWith: nil) { (records, error) in
+            if error != nil {
+                print("ERROR")
+                print(error!)
+                // use local data
+                self.chooseLocalFile()
+            } else {
+                print("SUCCESS")
+                // use cloud data
+                guard let records = records else { return }
+                if let parsedData = self.parseDataFromCloud(records) {
+                    self.writeJSON(parsedData)
+                }
+            }
+            DispatchQueue.main.async {
+                self.calendarView.reloadData()
+                let listView = self.tabBarController?.viewControllers?[1] as! ListViewController
+                listView.eventList = self.eventList
+            }
+        }
+    }
+    
+    private func parseDataFromCloud(_ records: Array<CKRecord>) -> Data? {
+        // clear all previous records
+        self.eventsFromCloud.removeAll()
+        self.eventList.removeAll()
+        self.dueDates.removeAll()
+        
+        var eventListJson: Array<String> = []
+        for recordtemp : CKRecord in records {
+            self.eventsFromCloud.append(recordtemp)
+            
+            let newSubject = recordtemp.value(forKeyPath: "subject") as! String
+            let newColor = recordtemp.value(forKeyPath: "color") as! Array<Double>
+            let newContent = recordtemp.value(forKeyPath: "content") as! String
+            let newDeadline = recordtemp.value(forKeyPath: "deadline") as! String
+            let newEmergence = recordtemp.value(forKeyPath: "priority") as! int_fast64_t
+            
+            let color = UIColor(red: CGFloat(newColor[0]), green: CGFloat(newColor[1]), blue: CGFloat(newColor[2]), alpha: 1.0)
+            // add Due
+            let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: Int(newEmergence))
+            self.eventList.append(newEvent)
+            self.dueDates.append(newEvent.deadline)
+            // parse Due
+            if let parsed = newEvent.toJSON() {
+                eventListJson.append(parsed)
+            }
+        }
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: eventListJson, options: JSONSerialization.WritingOptions.prettyPrinted)
+            return jsonData
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+    
+    private func chooseLocalFile() {
+        if let filePath = Bundle.main.url(forResource: "Dues", withExtension: "json") {
+            // use new data
+            print("USE Dues.json")
+            getLocalFile(filePath)
+        } else {
+            print("File does not exist, create it")
+            var documentsDirectory: URL?
+            var fileURL: URL?
+            documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+            fileURL = documentsDirectory!.appendingPathComponent("Dues.json")
+            NSData().write(to: fileURL!, atomically: true)
+        }
+    }
+    
+    private func getLocalFile(_ filePath: URL) {
+        do {
+            let file: FileHandle? = try FileHandle(forReadingFrom: filePath)
+            if file != nil {
+                let fileData = file!.readDataToEndOfFile()
+                file!.closeFile()
+                
+                // TEST
+                let str = NSString(data: fileData, encoding: String.Encoding.utf8.rawValue)
+                print("FILE CONTENT: \(str!)")
+                
+                parseJSON(fileData)
+                //
+            }
+        } catch {
+            print("Error in file reading: \(error.localizedDescription)")
+        }
+    }
+    
+    private func writeJSON(_ data: Data) {
+        var documentsDirectory: URL?
+        var fileURL: URL?
+        
+        documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
+        fileURL = documentsDirectory!.appendingPathComponent("Dues.json")
+        if Bundle.main.url(forResource: "Dues", withExtension: "json") != nil {
+            print("File exists")
+        } else {
+            print("File does not exist, create it")
+            NSData().write(to: fileURL!, atomically: true)
+        }
+        do {
+            let newFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
+            if newFile != nil {
+                newFile!.write(data)
+                print("FILE WRITE")
+            } else {
+                print("Unable to write JSON file!")
+            }
+        } catch {
+            print("Error in file writing: \(error.localizedDescription)")
+        }
+    }
+    
+    private func parseJSON(_ data: Data) {
+        // clear all previous records
+        self.eventsFromCloud.removeAll()
+        self.eventList.removeAll()
+        self.dueDates.removeAll()
+        
+        do {
+            let dueDecoded = try JSONDecoder().decode([DueDecodable].self, from: data)
+            for decoded : DueDecodable in dueDecoded {
+                let newSubject = decoded.subject
+                let newColor = decoded.color
+                let newContent = decoded.content
+                let newDeadline = decoded.deadline
+                let newEmergence = decoded.emergence
+                
+                let color = UIColor(red: newColor[0], green: newColor[1], blue: newColor[2], alpha: 1.0)
+                // add Due
+                let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: newEmergence)
+                self.eventList.append(newEvent)
+                self.dueDates.append(newEvent.deadline)
+            }
+        } catch {
+            print("ERROR in JSON parsing: \(error)")
+        }
+    }
 }
 
 extension ViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDelegate {
     func calendar(_ calendar: JTAppleCalendarView, willDisplay cell: JTAppleCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
-//        code
+        //        code
     }
     
     func configureCalendar(_ calendar: JTAppleCalendarView) -> ConfigurationParameters {
@@ -190,7 +336,6 @@ extension ViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDele
         } else {
             dateCell.eventIndicator.isHidden = true
         }
-        
         
         return dateCell
     }

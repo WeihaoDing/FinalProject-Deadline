@@ -24,9 +24,6 @@ class DateDetailViewController: UIViewController {
     public var formattedDate: String = ""
     
     public var lastView: String = ""
-    
-    private var mainViewController: UIViewController!
-    private var dateDetailViewController: DateDetailViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +37,11 @@ class DateDetailViewController: UIViewController {
     }
     
     @IBAction func backPressed(_ sender: UIButton) {
-        // to lastView
+        if lastView == "mainCalendar" {
+            self.performSegue(withIdentifier: "unwindToCalendar", sender: nil)
+        } else if lastView == "listView" {
+            self.performSegue(withIdentifier: "unwindToList", sender: nil)
+        }
     }
     
     private func setUpLayout() {
@@ -54,16 +55,5 @@ class DateDetailViewController: UIViewController {
         deadlineTitle.text = detail.deadline
         emergenceTitle.text = String.init(detail.emergence)
     }
-    
-    private func mainBuilder() {
-        if mainViewController == nil {
-            mainViewController = storyboard?.instantiateViewController(withIdentifier: "mainCalendar") as! ViewController
-        }
-    }
-    
-    private func datedetailBuilder() {
-        if dateDetailViewController == nil {
-            dateDetailViewController = storyboard?.instantiateViewController(withIdentifier: "dateDetailViewController") as! DateDetailViewController
-        }
-    }
+
 }
