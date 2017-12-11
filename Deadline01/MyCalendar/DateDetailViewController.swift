@@ -11,16 +11,32 @@ import UIKit
 class DateDetailViewController: UIViewController {
     @IBOutlet weak var dateTitle: UILabel!
     @IBOutlet weak var completeIndicator: UIView!
-    @IBOutlet weak var subjectTitle: UILabel!
-    @IBOutlet weak var dueColor: UIView!
-    @IBOutlet weak var contentTitle: UILabel!
-    @IBOutlet weak var deadlineTitle: UILabel!
-    @IBOutlet weak var emergenceTitle: UILabel!
+
+    @IBOutlet weak var dueColor: UIButton!
+    @IBOutlet weak var subject: UITextField!
     
+    @IBOutlet weak var colorPicker: UIStackView!
+    @IBOutlet weak var content: UITextField!
+    
+    @IBOutlet weak var emergence: UISlider!
+    @IBOutlet weak var deadline: UIButton!
+    
+
     public var detail: Due = Due.init()
     public var formattedDate: String = ""
     
     public var lastView: String = ""
+    
+    @IBAction func colorPicked(_ sender: UIButton) {
+        colorPicker.isHidden = true
+        let selectedColor = sender.backgroundColor!
+        dueColor.setBackgroundImage(imageFromColor(color: selectedColor), for: .normal)
+        
+    }
+    
+    @IBAction func colorClicked(_ sender: Any) {
+        colorPicker.isHidden = !colorPicker.isHidden
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +44,49 @@ class DateDetailViewController: UIViewController {
         print("DETAIL")
         print(detail.toJSON()!)
         print(formattedDate)
-        
+        subject.isEnabled = false
+        content.isEnabled = false
+        deadline.isEnabled = false
+        emergence.isEnabled = false
+        dueColor.isEnabled = false
+        colorPicker.isHidden = true
         setUpLayout()
+    }
+    
+    @IBAction func editClicked(_ sender: UIButton) {
+        if sender.title(for: .normal) == "Edit" {
+            subject.isEnabled = true
+            content.isEnabled = true
+            deadline.isEnabled = true
+            emergence.isEnabled = true
+            dueColor.isEnabled = true
+
+            sender.setTitle("Done", for: .normal)
+        }else if sender.title(for: .normal) == "Done" {
+            
+            // Need better error handling
+            
+            if (dueColor.backgroundColor != nil && content.text != nil &&
+                deadline.currentTitle != nil && subject.text != nil){
+                
+                detail.color = dueColor.backgroundColor!
+                detail.content = content.text!
+                detail.deadline = deadline.currentTitle!
+                
+                //not sure how emergence is converted
+                detail.emergence = Int(emergence.value)
+                
+                detail.subject = subject.text!
+            
+                subject.isEnabled = false
+                content.isEnabled = false
+                deadline.isEnabled = false
+                dueColor.isEnabled = false
+                emergence.isEnabled = false
+                sender.setTitle("Edit", for: .normal)
+                
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,11 +109,23 @@ class DateDetailViewController: UIViewController {
         completeIndicator.layer.cornerRadius = completeIndicator.frame.width / 2
         
         dateTitle.text = formattedDate
-        subjectTitle.text = detail.subject
+        subject.text = detail.subject
         dueColor.backgroundColor = detail.color
-        contentTitle.text = detail.content
-        deadlineTitle.text = detail.deadline
-        emergenceTitle.text = String.init(detail.emergence)
+        content.text = detail.content
+        deadline.setTitle(detail.deadline, for: .normal)
+        emergence.value = Float(detail.emergence)
+    }
+    
+    private func imageFromColor(color: UIColor) -> UIImage
+    {
+        let rect = CGRect.init(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
     }
     
 }
