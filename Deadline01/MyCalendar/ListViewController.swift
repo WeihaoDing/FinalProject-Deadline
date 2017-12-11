@@ -49,8 +49,8 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             cell = ListTableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
         }
         cell.dueEvent = eventList[indexPath.row]
-        dateFormatter.dateFormat = "yyyy MM dd"
-        let date = dateFormatter.date(from: eventList[indexPath.row].deadline)!
+        dateFormatter.dateFormat = "yyyy MM dd hh mm a"
+        let date = dateFormatter.date(from: cell.dueEvent.deadline)!
         dateFormatter.dateFormat = "MMMM dd"
         cell.date = dateFormatter.string(from: date)
         
@@ -59,7 +59,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         cell.textLabel?.text = self.eventList[indexPath.row].subject
         cell.textLabel?.adjustsFontSizeToFitWidth = true
-        cell.detailTextLabel?.text = self.eventList[indexPath.row].content
+        cell.detailTextLabel?.text = ("\(self.eventList[indexPath.row].content), Due: \(self.eventList[indexPath.row].deadline)")
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
         cell.backgroundColor = self.eventList[indexPath.row].color.withAlphaComponent(0.2)
         

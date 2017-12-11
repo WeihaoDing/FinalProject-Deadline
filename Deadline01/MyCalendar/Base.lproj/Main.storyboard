@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="shI-NB-GDq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="shI-NB-GDq">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -157,7 +157,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hef-Bq-ssW">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hef-Bq-ssW">
                                 <rect key="frame" x="0.0" y="62" width="375" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -281,11 +281,13 @@
                         <color key="backgroundColor" red="0.90784019231796265" green="0.9767875075340271" blue="0.97710436582565308" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="q40-lL-2FM" firstAttribute="trailing" secondItem="0tv-u0-vJj" secondAttribute="trailing" id="0lQ-73-tu7"/>
+                            <constraint firstItem="hef-Bq-ssW" firstAttribute="bottom" secondItem="0tv-u0-vJj" secondAttribute="bottom" id="3Jc-Vu-TyK"/>
                             <constraint firstItem="haM-ZC-MNQ" firstAttribute="top" secondItem="4pw-OE-eub" secondAttribute="top" id="8dU-OC-L7W"/>
                             <constraint firstItem="q40-lL-2FM" firstAttribute="top" secondItem="0tv-u0-vJj" secondAttribute="top" id="9jP-Hv-Hc4"/>
                             <constraint firstItem="hef-Bq-ssW" firstAttribute="leading" secondItem="0tv-u0-vJj" secondAttribute="leading" id="BVC-nY-MXc"/>
                             <constraint firstItem="q40-lL-2FM" firstAttribute="leading" secondItem="0tv-u0-vJj" secondAttribute="leading" id="DKy-GG-zMF"/>
                             <constraint firstItem="haM-ZC-MNQ" firstAttribute="trailing" secondItem="0tv-u0-vJj" secondAttribute="trailing" id="Yv6-90-afB"/>
+                            <constraint firstItem="hef-Bq-ssW" firstAttribute="top" secondItem="0tv-u0-vJj" secondAttribute="top" constant="42" id="Zi1-fY-O7B"/>
                             <constraint firstItem="haM-ZC-MNQ" firstAttribute="leading" secondItem="0tv-u0-vJj" secondAttribute="leading" id="akp-co-YR9"/>
                             <constraint firstItem="hef-Bq-ssW" firstAttribute="trailing" secondItem="0tv-u0-vJj" secondAttribute="trailing" id="e8A-B6-05m"/>
                             <constraint firstItem="0tv-u0-vJj" firstAttribute="trailing" secondItem="wph-Ls-w3h" secondAttribute="trailing" constant="16" id="klY-sV-fbK"/>
@@ -355,7 +357,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIb-Tk-VbL">
-                                                    <rect key="frame" x="87" y="3" width="8" height="8"/>
+                                                    <rect key="frame" x="79" y="11" width="8" height="8"/>
                                                     <color key="backgroundColor" red="1" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="8" id="gTo-Ir-jAO"/>
