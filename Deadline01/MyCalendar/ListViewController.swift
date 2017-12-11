@@ -26,6 +26,21 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return eventList.count
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            eventList.remove(at: indexPath.row)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: ListTableViewCell
         if let celltry = self.tableView.dequeueReusableCell(withIdentifier: "cell") {
@@ -61,7 +76,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // Storyboard ViewController
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var displaySetting: UIButton!
+
     
     @IBOutlet weak var popoverViewSub: UIView!
     @IBOutlet weak var dimmerViewSub: UIView!
@@ -86,10 +101,13 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         refreshControl.addTarget(self, action: #selector(ListViewController.refreshData(sender:)), for: .valueChanged)
         
+        
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        eventList.append(Due(subject: "1", color: .red, content: "1", deadline: "1", emergence: 1))
         tableView.reloadData()
     }
     
@@ -98,11 +116,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         refreshControl.endRefreshing()
     }
     
-    @IBAction func displayPressed(_ sender: UIButton) {
+    @IBAction func settingsPressed(_ sender: UIBarButtonItem) {
         popoverViewSub.isHidden = false
         dimmerViewSub.isHidden = false
     }
-    
+
     @IBAction func applied(_ sender: UIButton) {
         var errMessage = ""
         
