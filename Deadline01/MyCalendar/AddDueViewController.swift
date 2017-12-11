@@ -14,12 +14,23 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var subText: UITextField!
     @IBOutlet weak var conText: UITextField!
-    
     @IBOutlet weak var colorPickerStack: UIStackView!
     @IBOutlet weak var dateButton: UIButton!
     
+    private var selectedColor: UIColor = UIColor(red:0.99, green:0.96, blue:0.16, alpha:1.0)
+    
     var selectedDate = Date()
     let dateFormatter = DateFormatter()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.setLocalizedDateFormatFromTemplate("EE MMM d hh mm")
+        dateButton.setTitle(dateFormatter.string(from: selectedDate), for: .normal)
+        colorPickerStack.isHidden = true
+        datePicker.isHidden = true
+        
+    }
     
     @IBAction func dateButtonClicked(_ sender: UIButton) {
         datePicker.isHidden = !datePicker.isHidden
@@ -37,8 +48,8 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
     
     @IBAction func colorPicked(_ sender: UIButton) {
         colorPickerStack.isHidden = true
-        
-        colorButton.backgroundColor = sender.backgroundColor
+        selectedColor = sender.backgroundColor!
+        colorButton.setBackgroundImage(imageFromColor(color: selectedColor), for: .normal)
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
@@ -82,19 +93,6 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        dateFormatter.locale = Locale(identifier: "en_US")
-        dateFormatter.setLocalizedDateFormatFromTemplate("EE MMM d hh mm")
-        dateButton.setTitle(dateFormatter.string(from: selectedDate), for: .normal)
-        colorPickerStack.isHidden = true
-        datePicker.isHidden = true
-        
-
-       
-        // Do any additional setup after loading the view.
-    }
-    
     @objc func storeSelectedRow(){
 
     }
@@ -104,4 +102,15 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
         // Dispose of any resources that can be recreated.
     }
 
+    private func imageFromColor(color: UIColor) -> UIImage
+    {
+        let rect = CGRect.init(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
 }
