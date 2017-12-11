@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var popoverView: UIView!
     @IBOutlet weak var dimmerView: UIView!
+    @IBOutlet weak var logonButton: UIButton!
     
     public var eventList: Array<Due> = []
     public var dueDates: Array<String> = []
@@ -58,6 +59,8 @@ class ViewController: UIViewController {
         addDueBuilder()
     }
     
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         calendarView.reloadData()
@@ -91,6 +94,11 @@ class ViewController: UIViewController {
             multipleDueView.eventList = dateCell.dueEvent
             multipleDueView.formattedDate = dateCell.date
         }
+    }
+    
+    @IBAction func logonPressed(_ sender: UIButton) {
+        let settingsUrl = NSURL(string:UIApplicationOpenSettingsURLString)! as URL
+        UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
     }
     
     @IBAction func unwindToViewController(unwindSegue: UIStoryboardSegue) {
