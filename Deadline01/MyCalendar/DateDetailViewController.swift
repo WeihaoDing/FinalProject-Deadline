@@ -41,8 +41,8 @@ class DateDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
  
-        completeColor = imageFromColor(color: UIColor(red:0.36, green:0.72, blue:0.36, alpha:1.0))
-        uncompleteColor = imageFromColor(color: UIColor(red:0.83, green:0.24, blue:0.36, alpha:1.0))
+        completeColor = UIImage(named: "check-icon")!
+        uncompleteColor = UIImage(named: "cross-icon")!
         subject.isEnabled = false
         content.isEnabled = false
         deadline.isEnabled = false
