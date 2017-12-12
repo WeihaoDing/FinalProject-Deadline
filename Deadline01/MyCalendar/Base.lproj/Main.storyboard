@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="shI-NB-GDq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="shI-NB-GDq">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -213,6 +213,9 @@
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uf5-NS-NTE">
                                                         <rect key="frame" x="110.5" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="anySwitchClicked:" destination="Y2R-Qy-UbE" eventType="valueChanged" id="OcJ-tq-xFv"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                             </stackView>
@@ -227,6 +230,9 @@
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="c9s-Wv-53a">
                                                         <rect key="frame" x="110.5" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="anySwitchClicked:" destination="Y2R-Qy-UbE" eventType="valueChanged" id="PgF-Uh-dr3"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                             </stackView>
@@ -241,6 +247,9 @@
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="KAW-b7-RSK">
                                                         <rect key="frame" x="110.5" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="anySwitchClicked:" destination="Y2R-Qy-UbE" eventType="valueChanged" id="XGt-4l-hfX"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                             </stackView>
@@ -255,6 +264,9 @@
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="0Lk-Xw-cp4">
                                                         <rect key="frame" x="110.5" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="anySwitchClicked:" destination="Y2R-Qy-UbE" eventType="valueChanged" id="wE6-Dj-Scs"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                             </stackView>
@@ -304,7 +316,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="List" image="list-icon" id="jrv-sQ-I1Z"/>
                     <connections>
+                        <outlet property="completedSwitch" destination="KAW-b7-RSK" id="9IN-Wk-blg"/>
                         <outlet property="dimmerViewSub" destination="haM-ZC-MNQ" id="Pz0-o2-dDF"/>
+                        <outlet property="dueDateSwitch" destination="Uf5-NS-NTE" id="cnZ-HG-ZoL"/>
+                        <outlet property="emergenceSwitch" destination="0Lk-Xw-cp4" id="uLK-0Z-ZsZ"/>
+                        <outlet property="inprogressSwitch" destination="c9s-Wv-53a" id="ZQq-ZN-9Mh"/>
                         <outlet property="popoverViewSub" destination="wph-Ls-w3h" id="McA-eM-ejA"/>
                         <outlet property="tableView" destination="hef-Bq-ssW" id="Bf6-jj-xDJ"/>
                     </connections>
@@ -361,7 +377,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIb-Tk-VbL">
-                                                    <rect key="frame" x="79" y="11" width="8" height="8"/>
+                                                    <rect key="frame" x="87" y="3" width="8" height="8"/>
                                                     <color key="backgroundColor" red="1" green="0.84313725490196079" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="8" id="gTo-Ir-jAO"/>
@@ -1174,7 +1190,7 @@
         <image name="yellow" width="315" height="315"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Mg4-Tl-rRV"/>
+        <segue reference="epq-mR-6VR"/>
         <segue reference="CeS-6A-Ja6"/>
     </inferredMetricsTieBreakers>
 </document>

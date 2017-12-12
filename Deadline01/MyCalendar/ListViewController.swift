@@ -11,6 +11,10 @@ import CloudKit
 
 class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
+    @IBOutlet weak var emergenceSwitch: UISwitch!
+    @IBOutlet weak var completedSwitch: UISwitch!
+    @IBOutlet weak var inprogressSwitch: UISwitch!
+    @IBOutlet weak var dueDateSwitch: UISwitch!
     public var eventList: Array<Due> = []
     public var completedList: Array<Due> = []
     public var shouldWrite: Bool = false
@@ -20,12 +24,12 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     private var items: Array<ListTableViewCell> = []
     private var dateDetailViewController: DateDetailViewController!
-    
+    private var displayList: Array<Due> = []
     let dateFormatter = DateFormatter()
     
     // Tableview
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return eventList.count
+        return displayList.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -50,12 +54,14 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: ListTableViewCell
+        
         if let celltry = self.tableView.dequeueReusableCell(withIdentifier: "cell") {
             cell = celltry as! ListTableViewCell
         } else {
             cell = ListTableViewCell.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
         }
-        cell.dueEvent = eventList[indexPath.row]
+
+        cell.dueEvent = displayList[indexPath.row]
         dateFormatter.dateFormat = "yyyy MM dd hh mm a"
         let date = dateFormatter.date(from: cell.dueEvent.deadline)!
         dateFormatter.dateFormat = "MMMM dd"
@@ -64,12 +70,12 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // IMAGE? A DOT!!!
         //        cell.imageView?.image = self.images[indexPath.row - 3 * (indexPath.row / 3)]
         
-        cell.textLabel?.text = self.eventList[indexPath.row].subject
+        cell.textLabel?.text = self.displayList[indexPath.row].subject
         cell.textLabel?.adjustsFontSizeToFitWidth = true
-        cell.detailTextLabel?.text = ("\(self.eventList[indexPath.row].content), Due: \(self.eventList[indexPath.row].deadline)")
+        cell.detailTextLabel?.text = ("\(self.displayList[indexPath.row].content), Due: \(self.displayList[indexPath.row].deadline)")
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
-        if eventList[indexPath.row].completed == "false" {
-            cell.backgroundColor = self.eventList[indexPath.row].color.withAlphaComponent(0.2)
+        if displayList[indexPath.row].completed == "false" {
+            cell.backgroundColor = self.displayList[indexPath.row].color.withAlphaComponent(0.2)
         } else {
             cell.backgroundColor = UIColor(red:0.91, green:0.94, blue:0.96, alpha:1.0)
         }
@@ -109,7 +115,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             tableView.addSubview(refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(ListViewController.refreshData(sender:)), for: .valueChanged)
-
+        changeMode(mode: "default")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,6 +148,42 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         dimmerViewSub.isHidden = false
     }
 
+    @IBAction func anySwitchClicked(_ sender: UISwitch) {
+        emergenceSwitch.isOn = false
+        completedSwitch.isOn = false
+        inprogressSwitch.isOn = false
+        dueDateSwitch.isOn = false
+        sender.isOn = true
+    }
+    
+    func changeMode(mode:String) {
+        switch mode {
+        case "emergence":
+        //TODO:asdadsf
+            displayList = eventList
+            displayList.sort(by: { (due1, due2) -> Bool in
+                if (due1.emergence > due2.emergence){
+                    return true
+                }else {
+                    return false
+                }
+                })
+        case "completed":
+        //TODO:adsafd
+            displayList = completedList
+        case "inprogress":
+        //TODO: a ds
+            displayList = []
+            for due : Due in eventList {
+                if due.completed == "false" {
+                    displayList.append(due)
+                }
+            }
+        default:
+            displayList = eventList
+        }
+    }
+    
     @IBAction func applied(_ sender: UIButton) {
         var errMessage = ""
         
@@ -164,8 +206,19 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.present(alertController, animated: true)
         }
         
+        if (emergenceSwitch.isOn) {
+            changeMode(mode: "emergence")
+        }else if (inprogressSwitch.isOn) {
+            changeMode(mode: "inprogress")
+        }else if (dueDateSwitch.isOn) {
+            changeMode(mode: "dueDates")
+        }else if (completedSwitch.isOn) {
+            changeMode(mode: "completed")
+        }
+        
         popoverViewSub.isHidden = true
         dimmerViewSub.isHidden = true
+        tableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
