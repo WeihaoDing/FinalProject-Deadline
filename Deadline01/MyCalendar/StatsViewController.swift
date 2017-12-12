@@ -18,15 +18,6 @@ class StatsViewController: UIViewController {
     
     let dateFormatter = DateFormatter()
 
-    
-    
-    public var inprogress = 200
-    
-    public var finished = 10
-    
-    public var overdue = 20
-    
-    
     @IBOutlet weak var progressStack: UIStackView!
 
     @IBOutlet weak var overdueBarWidth: NSLayoutConstraint!
@@ -40,22 +31,37 @@ class StatsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NSLog(completedList.count.description)
+        NSLog(eventList.count.description)
+        NSLog(overdueList.count.description)
         
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        let totalTask = inprogress + finished + overdue
-        let length = progressStack.frame.width
-        finishedBarWidth.constant = CGFloat(Float(length) * (Float(finished) / Float(totalTask)))
-        inprogressBarWidth.constant = CGFloat(Float(length) * (Float(inprogress) / Float(totalTask)))
-        overdueBarWidth.constant = CGFloat(Float(length) * (Float(overdue) / Float(totalTask)))
+        let finished = completedList.count
+        
+        let overdue = overdueList.count
+        
+        let inprogress = eventList.count - finished - overdue
         
         finishedLabel.text = finished.description
         overdueLabel.text = overdue.description
         inprogressLabel.text = inprogress.description
         
-        progressStack.layer.masksToBounds = true
-        progressStack.layer.cornerRadius = CGFloat(30)
+        let totalTask = inprogress + finished + overdue
+        if (totalTask != 0) {
+            let length = progressStack.frame.width
+            
+            finishedBarWidth.constant = CGFloat(Float(length) * (Float(finished) / Float(totalTask)))
+            inprogressBarWidth.constant = CGFloat(Float(length) * (Float(inprogress) / Float(totalTask)))
+            overdueBarWidth.constant = CGFloat(Float(length) * (Float(overdue) / Float(totalTask)))
+        }
+        
+        
+            
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+
     }
     
     override func didReceiveMemoryWarning() {
