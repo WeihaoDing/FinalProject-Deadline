@@ -12,6 +12,8 @@ import CloudKit
 class ListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     public var eventList: Array<Due> = []
+    public var completedList: Array<Due> = []
+    public var shouldWrite: Bool = false
     // DATABASE SHOULD BE PRIVATE
     let database = CKContainer.default().publicCloudDatabase
     var eventsFromCloud: Array<CKRecord> = []
@@ -66,8 +68,11 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = ("\(self.eventList[indexPath.row].content), Due: \(self.eventList[indexPath.row].deadline)")
         cell.detailTextLabel?.adjustsFontSizeToFitWidth = true
-        cell.backgroundColor = self.eventList[indexPath.row].color.withAlphaComponent(0.2)
-        
+        if eventList[indexPath.row].completed == "false" {
+            cell.backgroundColor = self.eventList[indexPath.row].color.withAlphaComponent(0.2)
+        } else {
+            cell.backgroundColor = UIColor(red:0.91, green:0.94, blue:0.96, alpha:1.0)
+        }
         items.append(cell)
         return cell
     }
@@ -82,7 +87,6 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // Storyboard ViewController
     @IBOutlet weak var tableView: UITableView!
 
-    
     @IBOutlet weak var popoverViewSub: UIView!
     @IBOutlet weak var dimmerViewSub: UIView!
     
@@ -105,27 +109,27 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             tableView.addSubview(refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(ListViewController.refreshData(sender:)), for: .valueChanged)
-        tableView.reloadData()
-        
+
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.reloadData()
+        if shouldWrite {
+            if let parsedEventList = parseEventList() {
+                writeJSON(parsedEventList)
+            }
+        }
+    }
     
     @IBAction func editButtonClicked(_ sender: UINavigationItem) {
-        if(self.tableView.isEditing == true)
-        {
+        if(self.tableView.isEditing == true) {
             self.tableView.isEditing = false
             sender.title = "Edit"
-        }
-        else
-        {
+        } else {
             self.tableView.isEditing = true
             sender.title = "Done"
         }
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        eventList.append(Due(subject: "1", color: .red, content: "1", deadline: "1", emergence: 1))
-        tableView.reloadData()
     }
     
     @objc private func refreshData(sender: UIRefreshControl) {
@@ -171,6 +175,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             datedetailView.detail = dateCell.dueEvent
             datedetailView.formattedDate = dateCell.date
             datedetailView.lastView = "listView"
+            datedetailView.lastIndex = eventList.index(where: { $0.toJSON() == dateCell.dueEvent.toJSON() })!
         }
     }
     
@@ -211,8 +216,15 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                let calendarView = self.tabBarController?.viewControllers?[0] as! ListViewController
+                let calendarView = self.tabBarController?.viewControllers?[0] as! ViewController
                 calendarView.eventList = self.eventList
+                calendarView.dueDates.removeAll()
+                for duedate : Due in self.eventList {
+                    calendarView.dueDates.append(duedate.deadline)
+                }
+                let statsView = self.tabBarController?.viewControllers?[0] as! StatsViewController
+                statsView.eventList = self.eventList
+                statsView.shouldCalc = true
             }
         }
     }
@@ -231,11 +243,16 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let newContent = recordtemp.value(forKeyPath: "content") as! String
             let newDeadline = recordtemp.value(forKeyPath: "deadline") as! String
             let newEmergence = recordtemp.value(forKeyPath: "priority") as! int_fast64_t
+            let newCompleted = recordtemp.value(forKeyPath: "completed") as! String
+            let newRecordName = recordtemp.recordID.recordName 
             
             let color = UIColor(red: CGFloat(newColor[0]), green: CGFloat(newColor[1]), blue: CGFloat(newColor[2]), alpha: 1.0)
             // add Due
-            let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: Int(newEmergence))
+            let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: Int(newEmergence), completed: newCompleted, recordName: newRecordName)
             self.eventList.append(newEvent)
+            if newCompleted == "true" {
+                self.completedList.append(newEvent)
+            }
             // parse Due
             if let parsed = newEvent.toJSON() {
                 eventListJson.append(parsed)
@@ -290,11 +307,16 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
         fileURL = documentsDirectory!.appendingPathComponent("Dues.json")
-        if Bundle.main.url(forResource: "Dues", withExtension: "json") != nil {
-            print("File exists")
-        } else {
-            print("File does not exist, create it")
-            NSData().write(to: fileURL!, atomically: true)
+        do {
+            let checkFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
+            if checkFile == nil {
+                print("File does not exist, create it")
+                NSData().write(to: fileURL!, atomically: true)
+            } else {
+                print("File exists")
+            }
+        } catch {
+            print("Error in file creating: \(error.localizedDescription)")
         }
         do {
             let newFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
@@ -322,14 +344,35 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 let newContent = decoded.content
                 let newDeadline = decoded.deadline
                 let newEmergence = decoded.emergence
-                
+                let newCompleted = decoded.completed
+                let newRecordName = decoded.recordName
+
                 let color = UIColor(red: newColor[0], green: newColor[1], blue: newColor[2], alpha: 1.0)
                 // add Due
-                let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: newEmergence)
+                let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: newEmergence, completed: newCompleted, recordName: newRecordName)
                 self.eventList.append(newEvent)
+                if newCompleted == "true" {
+                    self.completedList.append(newEvent)
+                }
             }
         } catch {
             print("ERROR in JSON parsing: \(error)")
+        }
+    }
+    
+    private func parseEventList() -> Data? {
+        var eventListJson: Array<String> = []
+        for event : Due in eventList {
+            if let parsed = event.toJSON() {
+                eventListJson.append(parsed)
+            }
+        }
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: eventListJson, options: JSONSerialization.WritingOptions.prettyPrinted)
+            return jsonData
+        } catch {
+            print(error)
+            return nil
         }
     }
     

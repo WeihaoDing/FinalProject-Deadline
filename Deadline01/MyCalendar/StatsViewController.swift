@@ -11,6 +11,15 @@ import UIKit
 class StatsViewController: UIViewController {
     
     //need to be populized, from icloud or other views..
+    public var eventList: Array<Due> = []
+    public var completedList: Array<Due> = []
+    public var overdueList: Array<Due> = []
+    public var shouldCalc: Bool = false
+    
+    let dateFormatter = DateFormatter()
+
+    
+    
     public var inprogress = 200
     
     public var finished = 10
@@ -32,9 +41,6 @@ class StatsViewController: UIViewController {
         super.viewDidLoad()
         
         
-        //overdue should automaticly adjust width
-        
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,16 +64,20 @@ class StatsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    private func calcProgress() {
+        completedList.removeAll()
+        overdueList.removeAll()
+        for event : Due in eventList {
+            if event.completed == "true" {
+                completedList.append(event)
+            }
+            dateFormatter.dateFormat = "yyyy MM dd hh mm a"
+            let duedate = dateFormatter.date(from: event.deadline)!
+            if duedate < Date() {
+                overdueList.append(event)
+            }
+        }
+    }
     
 }
 

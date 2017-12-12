@@ -21,7 +21,11 @@ class ViewController: UIViewController {
     
     public var eventList: Array<Due> = []
     public var dueDates: Array<String> = []
-    
+    public var completedList: Array<Due> = []
+    public var overdueList: Array<Due> = []
+    public var shouldFetch: Bool = false
+    public var shouldWrite: Bool = false
+
     // DATABASE SHOULD BE PRIVATE
     let database = CKContainer.default().publicCloudDatabase
     var eventsFromCloud: Array<CKRecord> = []
@@ -59,13 +63,27 @@ class ViewController: UIViewController {
         addDueBuilder()
     }
     
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        calendarView.reloadData()
+        if shouldFetch {
+            fetchData()
+            shouldFetch = false
+        } else {
+            calendarView.reloadData()
+        }
         let listView = self.tabBarController?.viewControllers?[1] as! ListViewController
         listView.eventList = self.eventList
+        listView.completedList = self.completedList
+        let statsView = self.tabBarController?.viewControllers?[2] as! StatsViewController
+        statsView.eventList = self.eventList
+        statsView.completedList = self.completedList
+        statsView.overdueList = self.overdueList
+        statsView.shouldCalc = false
+        if shouldWrite {
+            if let parsedEventList = parseEventList() {
+                writeJSON(parsedEventList)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -85,6 +103,7 @@ class ViewController: UIViewController {
             detailView.detail = dateCell.dueEvent[0]
             detailView.formattedDate = dateCell.date
             detailView.lastView = "mainCalendar"
+            detailView.lastIndex = eventList.index(where: { $0.toJSON() == dateCell.dueEvent[0].toJSON() })!
         } else if segue.identifier == "add" || segue.identifier == "toAddDue" {
             let addDueView = segue.destination as! AddDueViewController
             addDueView.eventList = self.eventList
@@ -99,6 +118,14 @@ class ViewController: UIViewController {
     @IBAction func logonPressed(_ sender: UIButton) {
         let settingsUrl = NSURL(string:UIApplicationOpenSettingsURLString)! as URL
         UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+        popoverView.isHidden = true
+        dimmerView.isHidden = true
+    }
+    
+    @IBAction func syncPressed(_ sender: UIButton) {
+        viewDidAppear(false)
+        popoverView.isHidden = true
+        dimmerView.isHidden = true
     }
     
     @IBAction func unwindToViewController(unwindSegue: UIStoryboardSegue) {
@@ -200,10 +227,12 @@ class ViewController: UIViewController {
             let newContent = recordtemp.value(forKeyPath: "content") as! String
             let newDeadline = recordtemp.value(forKeyPath: "deadline") as! String
             let newEmergence = recordtemp.value(forKeyPath: "priority") as! int_fast64_t
+            let newCompleted = recordtemp.value(forKeyPath: "completed") as! String
+            let newRecordName = recordtemp.recordID.recordName 
             
             let color = UIColor(red: CGFloat(newColor[0]), green: CGFloat(newColor[1]), blue: CGFloat(newColor[2]), alpha: 1.0)
             // add Due
-            let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: Int(newEmergence))
+            let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: Int(newEmergence), completed: newCompleted, recordName: newRecordName)
             self.eventList.append(newEvent)
             self.dueDates.append(newEvent.deadline)
             // parse Due
@@ -260,11 +289,22 @@ class ViewController: UIViewController {
         
         documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
         fileURL = documentsDirectory!.appendingPathComponent("Dues.json")
-        if Bundle.main.url(forResource: "Dues", withExtension: "json") != nil {
-            print("File exists")
-        } else {
-            print("File does not exist, create it")
-            NSData().write(to: fileURL!, atomically: true)
+//        if Bundle.main.url(forResource: "Dues", withExtension: "json") != nil {
+//            print("File exists")
+//        } else {
+//            print("File does not exist, create it")
+//            NSData().write(to: fileURL!, atomically: true)
+//        }
+        do {
+            let checkFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
+            if checkFile == nil {
+                print("File does not exist, create it")
+                NSData().write(to: fileURL!, atomically: true)
+            } else {
+                print("File exists")
+            }
+        } catch {
+            print("Error in file creating: \(error.localizedDescription)")
         }
         do {
             let newFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
@@ -277,6 +317,18 @@ class ViewController: UIViewController {
         } catch {
             print("Error in file writing: \(error.localizedDescription)")
         }
+//        // DEBUG
+//        do {
+//            let file: FileHandle? = try FileHandle(forReadingFrom: fileURL!)
+//            if file != nil {
+//                let fileData = file!.readDataToEndOfFile()
+//                file!.closeFile()
+//                let str = NSString(data: fileData, encoding: String.Encoding.utf8.rawValue)
+//                print("FILE CONTENT: \(str!)")
+//            }
+//        } catch {
+//            print("Error in file reading: \(error.localizedDescription)")
+//        }
     }
     
     private func parseJSON(_ data: Data) {
@@ -293,15 +345,36 @@ class ViewController: UIViewController {
                 let newContent = decoded.content
                 let newDeadline = decoded.deadline
                 let newEmergence = decoded.emergence
+                let newCompleted = decoded.completed
+                let newRecordName = decoded.recordName
                 
                 let color = UIColor(red: newColor[0], green: newColor[1], blue: newColor[2], alpha: 1.0)
                 // add Due
-                let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: newEmergence)
+                let newEvent: Due = Due.init(subject: newSubject, color: color, content: newContent, deadline: newDeadline, emergence: newEmergence, completed: newCompleted, recordName: newRecordName)
                 self.eventList.append(newEvent)
                 self.dueDates.append(newEvent.deadline)
+                if newCompleted == "true" {
+                    self.completedList.append(newEvent)
+                }
             }
         } catch {
             print("ERROR in JSON parsing: \(error)")
+        }
+    }
+    
+    private func parseEventList() -> Data? {
+        var eventListJson: Array<String> = []
+        for event : Due in eventList {
+            if let parsed = event.toJSON() {
+                eventListJson.append(parsed)
+            }
+        }
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: eventListJson, options: JSONSerialization.WritingOptions.prettyPrinted)
+            return jsonData
+        } catch {
+            print(error)
+            return nil
         }
     }
 }
@@ -352,15 +425,23 @@ extension ViewController: JTAppleCalendarViewDataSource, JTAppleCalendarViewDele
             dateCell.dateLabel.textColor = UIColor.white
         }
         // set event indicator and events corresponding to a date
-        
+        dateCell.dueEvent.removeAll()
         dateFormatter.dateFormat = "yyyy MM dd"
         let cellStateDate = dateFormatter.string(from: cellState.date)
         var onedayEvent: Array<Int> = []
         if dueDates.count >= 1 {
             for i in 0...dueDates.count - 1 {
                 if dueDates[i].hasPrefix(cellStateDate) {
-                    onedayEvent.append(i)
-                    dateCell.dueEvent.append(eventList[i])
+                    let temp = eventList[i]
+                    if temp.completed == "false" {
+                        onedayEvent.append(i)
+                        dateCell.dueEvent.append(temp)
+                        if cellState.date < Date() {
+                            overdueList.append(temp)
+                        }
+                    } else if temp.completed == "true" {
+                        completedList.append(temp)
+                    }
                 }
             }
         }

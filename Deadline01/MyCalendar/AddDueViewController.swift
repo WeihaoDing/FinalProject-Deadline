@@ -55,7 +55,6 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBAction func dateChanged(_ sender: UIDatePicker) {
         selectedDate = sender.date
         dateButton.setTitle(dateFormatter.string(from: sender.date), for: .normal)
-        
     }
     
     @IBAction func colorButtonClicked(_ sender: UIButton) {
@@ -75,51 +74,57 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
     // Save the new Due to iCloud, and the local file
     @IBAction func addDue(_ sender: UIButton) {
         // check if the inputs are VALID!
-        // check subject
-        //
-        //
-        let subjectData = subText.text!
-        let contentData = conText.text!
-        dateFormatter.dateFormat = "yyyy MM dd hh mm a"
-        let deadline = dateFormatter.string(from: selectedDate)
-        let emergence = Int(emerg.value)
-        // save to local
-        let due = Due(subject: subjectData, color: selectedColor, content: contentData, deadline: deadline, emergence: emergence)
-        eventList.append(due)
-        var dueJSONArr: Array<String> = []
-        for event : Due in eventList {
-            dueJSONArr.append(event.toJSON()!)
-        }
-        if let converted = convertToJSON(dueJSONArr) {
-            writeToLocalFile(converted)
-        } else {
-            print("Error: Cannot convert to JSON")
-        }
-        // save to cloud
-        let colorArrTemp = selectedColor.components
-        let colorArr = [colorArrTemp.red, colorArrTemp.green, colorArrTemp.blue]
-        
-        let newDue = CKRecord(recordType: "Due")
-        newDue.setValue(subjectData, forKey: "subject")
-        newDue.setValue(colorArr, forKey: "color")
-        newDue.setValue(contentData, forKey: "content")
-        newDue.setValue(deadline, forKey: "deadline")
-        newDue.setValue(emergence, forKey: "priority")
-        
-        database.save(newDue) { (record, error) in
-            guard record != nil else { return }
-            print("SAVED TO CLOUD")
+        if (subText.text != nil && conText.text != nil &&
+            dateButton.currentTitle != nil){
+            let subjectData = subText.text!
+            let contentData = conText.text!
+            dateFormatter.dateFormat = "yyyy MM dd hh mm a"
+            let deadline = dateFormatter.string(from: selectedDate)
+            let emergence = Int(emerg.value)
+            // save to local
+            let due = Due(subject: subjectData, color: selectedColor, content: contentData, deadline: deadline, emergence: emergence, completed: "false", recordName: "")
+            eventList.append(due)
+            var dueJSONArr: Array<String> = []
+            for event : Due in eventList {
+                dueJSONArr.append(event.toJSON()!)
+            }
+            if let converted = convertToJSON(dueJSONArr) {
+                writeToLocalFile(converted)
+            } else {
+                print("Error: Cannot convert to JSON")
+            }
+            // save to cloud
+            let colorArrTemp = selectedColor.components
+            let colorArr = [colorArrTemp.red, colorArrTemp.green, colorArrTemp.blue]
+            
+            let newDue = CKRecord(recordType: "Due")
+            newDue.setValue(subjectData, forKey: "subject")
+            newDue.setValue(colorArr, forKey: "color")
+            newDue.setValue(contentData, forKey: "content")
+            newDue.setValue(deadline, forKey: "deadline")
+            newDue.setValue(emergence, forKey: "priority")
+            newDue.setValue("false", forKey: "completed")
+            
+            database.save(newDue) { (record, error) in
+                guard record != nil else { return }
+                print("SAVED TO CLOUD")
+            }
         }
         
         // pass the new eventList to calendar, list, and stats
-        self.performSegue(withIdentifier: "unwindToCalendar", sender: nil)
-        
+        self.performSegue(withIdentifier: "unwindToCalendar", sender: nil)        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindToCalendar" {
             let calendarView = segue.destination as! ViewController
+            eventList.sort(by: { $0.deadline < $1.deadline })
             calendarView.eventList = eventList
+            var newDueDates: Array<String> = []
+            for event : Due in eventList {
+                newDueDates.append(event.deadline)
+            }
+            calendarView.dueDates = newDueDates
         }
     }
     
@@ -148,11 +153,16 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
         
         documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
         fileURL = documentsDirectory!.appendingPathComponent("Dues.json")
-        if Bundle.main.url(forResource: "Dues", withExtension: "json") != nil {
-            print("File exists")
-        } else {
-            print("File does not exist, create it")
-            NSData().write(to: fileURL!, atomically: true)
+        do {
+            let checkFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
+            if checkFile == nil {
+                print("File does not exist, create it")
+                NSData().write(to: fileURL!, atomically: true)
+            } else {
+                print("File exists")
+            }
+        } catch {
+            print("Error in file creating: \(error.localizedDescription)")
         }
         do {
             let newFile: FileHandle? = try FileHandle(forWritingTo: fileURL!)
@@ -164,18 +174,6 @@ class AddDueViewController: UIViewController, UIPopoverPresentationControllerDel
             }
         } catch {
             print("Error in file writing: \(error.localizedDescription)")
-        }
-        // DEBUG
-        do {
-            let file: FileHandle? = try FileHandle(forReadingFrom: fileURL!)
-            if file != nil {
-                let fileData = file!.readDataToEndOfFile()
-                file!.closeFile()
-                let str = NSString(data: fileData, encoding: String.Encoding.utf8.rawValue)
-                print("FILE CONTENT: \(str!)")
-            }
-        } catch {
-            print("Error in file reading: \(error.localizedDescription)")
         }
     }
     

@@ -35,6 +35,8 @@ public struct Due {
     public var deadline: String
     // 1 (urgent) --- 10
     public var emergence: Int
+    public var completed: String
+    public var recordName: String
     
     init() {
         subject = ""
@@ -42,19 +44,23 @@ public struct Due {
         content = ""
         deadline = ""
         emergence = 10
+        completed = ""
+        recordName = ""
     }
     
-    init(subject: String, color: UIColor, content: String, deadline: String, emergence: Int) {
+    init(subject: String, color: UIColor, content: String, deadline: String, emergence: Int, completed: String, recordName: String) {
         self.subject = subject
         self.color = color
         self.content = content
         self.deadline = deadline
         self.emergence = emergence
+        self.completed = completed
+        self.recordName = recordName
     }
     
     func toJSON() -> String? {
         let tempColor = [self.color.components.red, self.color.components.green, self.color.components.blue]
-        let temp = ["subject": self.subject, "color": tempColor, "content": self.content, "deadline": self.deadline, "emergence": self.emergence] as [String : Any]
+        let temp = ["subject": self.subject, "color": tempColor, "content": self.content, "deadline": self.deadline, "emergence": self.emergence, "completed": self.completed, "recordName": self.recordName] as [String : Any]
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: temp, options: .prettyPrinted)
             return String(data: jsonData, encoding: String.Encoding.utf8)
@@ -73,6 +79,8 @@ public struct DueDecodable: Decodable {
     let deadline: String
     // 1 (urgent) --- 10
     let emergence: Int
+    let completed: String
+    let recordName: String
 }
 
 extension UIColor {
