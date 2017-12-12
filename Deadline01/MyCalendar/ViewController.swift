@@ -128,41 +128,16 @@ class ViewController: UIViewController {
         dimmerView.isHidden = true
     }
     
+    @IBAction func exportPressed(sender: UIButton) {
+        
+    }
+    
     @IBAction func unwindToViewController(unwindSegue: UIStoryboardSegue) {
     }
     
-    @IBAction func displayPressed(_ sender: UIButton) {
+    @IBAction func settingPressed(_ sender: UIButton) {
         popoverView.isHidden = false
         dimmerView.isHidden = false
-        
-        // hide this view even not sync!
-        
-    }
-    
-    @IBAction func setted(_ sender: UIButton) {
-        var errMessage = ""
-        
-        //        if newSource != nil && newSource != "" {
-        //            let range = newSource!.startIndex..<newSource!.endIndex
-        //            let correctRange = newSource!.range(of: "^(http)s?(:\\/\\/).*$", options: .regularExpression)
-        //            if correctRange == range {
-        //                source = newSource!
-        //                fetchData()
-        //            } else {
-        //                errMessage = "Invalid URL"
-        //            }
-        //        } else {
-        //            errMessage = "Please enter an URL"
-        //        }
-        if errMessage != "" {
-            let alertController = UIAlertController(title: "ERROR", message: errMessage, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true)
-        }
-        
-        popoverView.isHidden = true
-        dimmerView.isHidden = true
     }
     
     private func multipleDueBuilder() {

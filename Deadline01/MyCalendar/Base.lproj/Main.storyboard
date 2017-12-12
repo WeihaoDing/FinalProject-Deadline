@@ -478,7 +478,7 @@
                                     <color key="titleColor" red="0.0" green="0.35686274509803922" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="displayPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TZa-TV-FEK"/>
+                                    <action selector="settingPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hqX-rk-7sY"/>
                                 </connections>
                             </button>
                             <view alpha="0.55000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZN3-Uy-CM2">
@@ -486,25 +486,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khB-QG-QV1">
-                                <rect key="frame" x="16" y="70" width="265" height="105"/>
+                                <rect key="frame" x="16" y="67" width="229" height="145"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="uL9-ea-p5Y">
-                                        <rect key="frame" x="18" y="17" width="126" height="71"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="uL9-ea-p5Y">
+                                        <rect key="frame" x="15.5" y="17" width="198" height="108"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uSd-D1-5h2">
-                                                <rect key="frame" x="0.0" y="0.0" width="118" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                <state key="normal" title="Sync to iCloud">
-                                                    <color key="titleColor" red="0.01176470588" green="0.22352941179999999" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="setted:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4CC-OC-dea"/>
-                                                    <action selector="syncPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3NB-BV-1nC"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBm-aq-BwW">
-                                                <rect key="frame" x="0.0" y="37" width="126" height="34"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vBm-aq-BwW">
+                                                <rect key="frame" x="0.0" y="0.0" width="126" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <state key="normal" title="Log in to iCloud">
                                                     <color key="titleColor" red="0.01176470588" green="0.22352941179999999" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -513,10 +501,35 @@
                                                     <action selector="logonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xa5-4d-rVA"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uSd-D1-5h2">
+                                                <rect key="frame" x="0.0" y="37" width="118" height="34"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <state key="normal" title="Sync to iCloud">
+                                                    <color key="titleColor" red="0.01176470588" green="0.22352941179999999" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="syncPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3NB-BV-1nC"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cmc-V8-fBw">
+                                                <rect key="frame" x="0.0" y="74" width="198" height="34"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <state key="normal" title="Export Dues to Calendar">
+                                                    <color key="titleColor" red="0.01176470588" green="0.22352941179999999" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="exportPressedWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="72Q-NQ-hTX"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="uL9-ea-p5Y" secondAttribute="bottom" constant="20" id="Vfy-NP-YPi"/>
+                                    <constraint firstItem="uL9-ea-p5Y" firstAttribute="top" secondItem="khB-QG-QV1" secondAttribute="top" constant="17" id="ZHa-al-b7F"/>
+                                    <constraint firstItem="uL9-ea-p5Y" firstAttribute="centerX" secondItem="khB-QG-QV1" secondAttribute="centerX" id="iHj-DK-mOH"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -527,13 +540,13 @@
                             <constraint firstItem="azp-xW-Kep" firstAttribute="top" secondItem="FBc-sW-0Si" secondAttribute="bottom" constant="125" id="9hC-lR-JUL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FBc-sW-0Si" secondAttribute="trailing" constant="16" id="Bqj-wj-bpZ"/>
                             <constraint firstItem="kXt-Jd-Oom" firstAttribute="top" secondItem="fH7-hD-LhC" secondAttribute="bottom" constant="10" id="Eas-r2-erG"/>
+                            <constraint firstItem="khB-QG-QV1" firstAttribute="top" secondItem="fH7-hD-LhC" secondAttribute="bottom" constant="1" id="MqW-Gz-oMg"/>
                             <constraint firstItem="khB-QG-QV1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="OCf-zl-AhA"/>
                             <constraint firstItem="ZN3-Uy-CM2" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Omd-3a-CFi"/>
                             <constraint firstItem="fH7-hD-LhC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="b5T-tY-R1P"/>
                             <constraint firstItem="ZN3-Uy-CM2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="bkS-f4-zAy"/>
                             <constraint firstItem="ZN3-Uy-CM2" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ehQ-6r-Blg"/>
                             <constraint firstItem="kXt-Jd-Oom" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="eum-T4-Fra"/>
-                            <constraint firstItem="khB-QG-QV1" firstAttribute="top" secondItem="fH7-hD-LhC" secondAttribute="bottom" constant="4" id="h6g-Fs-gjf"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="JAr-Zk-BPU" secondAttribute="bottom" constant="73" id="jhA-hf-CJ2"/>
                             <constraint firstItem="azp-xW-Kep" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="3" id="ksr-lg-b1l"/>
                             <constraint firstItem="JAr-Zk-BPU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pl1-h5-E2o"/>
@@ -541,9 +554,9 @@
                             <constraint firstItem="fH7-hD-LhC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="pyb-rc-alQ"/>
                             <constraint firstItem="FBc-sW-0Si" firstAttribute="leading" secondItem="fH7-hD-LhC" secondAttribute="trailing" constant="246" id="s8A-nE-BTC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="azp-xW-Kep" secondAttribute="trailing" constant="3" id="syv-m8-dWs"/>
-                            <constraint firstItem="azp-xW-Kep" firstAttribute="top" secondItem="khB-QG-QV1" secondAttribute="bottom" constant="8" id="uEY-4d-Hf7"/>
+                            <constraint firstItem="JAr-Zk-BPU" firstAttribute="top" secondItem="khB-QG-QV1" secondAttribute="bottom" id="tz6-Sy-cZX"/>
                             <constraint firstItem="azp-xW-Kep" firstAttribute="top" secondItem="kXt-Jd-Oom" secondAttribute="bottom" constant="15" id="xDK-eg-MFQ"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="khB-QG-QV1" secondAttribute="trailing" constant="94" id="yWA-bZ-fdu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="khB-QG-QV1" secondAttribute="trailing" constant="130" id="yWA-bZ-fdu"/>
                             <constraint firstItem="JAr-Zk-BPU" firstAttribute="top" secondItem="azp-xW-Kep" secondAttribute="bottom" constant="8.5" id="zOD-s5-7VD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -1096,7 +1109,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K02-NL-7RQ">
-                                <rect key="frame" x="16" y="121" width="343" height="526"/>
+                                <rect key="frame" x="16" y="128" width="343" height="519"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="pql-Ti-D38">
@@ -1113,7 +1126,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81g-WY-Idc">
-                                <rect key="frame" x="16" y="20" width="46" height="34"/>
+                                <rect key="frame" x="16" y="27" width="46" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Back">
                                     <color key="titleColor" red="0.58039215690000001" green="0.32156862749999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1123,7 +1136,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="November 30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0em-Iy-r1x">
-                                <rect key="frame" x="84" y="71" width="206.5" height="42"/>
+                                <rect key="frame" x="84" y="78" width="206.5" height="42"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1137,7 +1150,7 @@
                             <constraint firstItem="K02-NL-7RQ" firstAttribute="top" secondItem="0em-Iy-r1x" secondAttribute="bottom" constant="8" id="Zkf-GV-x34"/>
                             <constraint firstItem="K02-NL-7RQ" firstAttribute="leading" secondItem="RUv-3o-t98" secondAttribute="leading" constant="16" id="lPT-4b-uf8"/>
                             <constraint firstItem="0em-Iy-r1x" firstAttribute="centerX" secondItem="pKC-V6-AqV" secondAttribute="centerX" id="mob-u1-waq"/>
-                            <constraint firstItem="81g-WY-Idc" firstAttribute="top" secondItem="RUv-3o-t98" secondAttribute="top" id="pwd-l8-fYu"/>
+                            <constraint firstItem="81g-WY-Idc" firstAttribute="top" secondItem="RUv-3o-t98" secondAttribute="top" constant="7" id="pwd-l8-fYu"/>
                             <constraint firstItem="K02-NL-7RQ" firstAttribute="top" secondItem="81g-WY-Idc" secondAttribute="bottom" constant="67" id="rx0-EH-VeV"/>
                             <constraint firstItem="RUv-3o-t98" firstAttribute="trailing" secondItem="81g-WY-Idc" secondAttribute="trailing" constant="313" id="yO3-Tq-oni"/>
                         </constraints>

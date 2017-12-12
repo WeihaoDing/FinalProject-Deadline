@@ -222,7 +222,7 @@ class ListViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 for duedate : Due in self.eventList {
                     calendarView.dueDates.append(duedate.deadline)
                 }
-                let statsView = self.tabBarController?.viewControllers?[0] as! StatsViewController
+                let statsView = self.tabBarController?.viewControllers?[2] as! StatsViewController
                 statsView.eventList = self.eventList
                 statsView.shouldCalc = true
             }
